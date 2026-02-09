@@ -9,6 +9,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Any, Literal, TypedDict
 
+from ..const.command_class.battery import BatteryReplacementStatus
 from ..const.command_class.multilevel_switch import MultilevelSwitchCommand
 from ..const.command_class.power_level import PowerLevelTestStatus
 from ..util.helpers import parse_buffer
@@ -42,6 +43,34 @@ class BaseNotification:
         self.node_id = self.data["nodeId"]
         self.endpoint_idx = self.data["endpointIndex"]
         self.command_class = self.data["ccId"]
+
+
+class BatteryNotificationArgsDataType(TypedDict):
+    """Represent args for a Battery CC notification event data dict type."""
+
+    eventType: Literal["battery low"]  # required
+    urgency: int  # required
+
+
+class BatteryNotificationDataType(BaseNotificationDataType):
+    """Represent a Battery CC notification event data dict type."""
+
+    args: BatteryNotificationArgsDataType  # required
+
+
+@dataclass
+class BatteryNotification(BaseNotification):
+    """Model for a Zwave Node's Battery CC notification event."""
+
+    data: BatteryNotificationDataType = field(repr=False)
+    event_type: str = field(init=False)
+    urgency: BatteryReplacementStatus = field(init=False)
+
+    def __post_init__(self) -> None:
+        """Post initialize."""
+        super().__post_init__()
+        self.event_type = self.data["args"]["eventType"]
+        self.urgency = BatteryReplacementStatus(self.data["args"]["urgency"])
 
 
 class EntryControlNotificationArgsDataType(TypedDict, total=False):
