@@ -38,7 +38,7 @@ class AllowedValueSingleDataType(TypedDict):
 
 AllowedValueRangeDataType = TypedDict(
     "AllowedValueRangeDataType",
-    # `from` is a reserved keyword
+    # not using class based definition as `from` is a reserved keyword
     {"from": int, "to": int, "step": NotRequired[int]},
 )
 
