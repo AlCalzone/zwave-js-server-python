@@ -53,7 +53,7 @@ class MetaDataType(TypedDict, total=False):
     readable: bool  # required
     writeable: bool  # required
     label: str
-    description: str
+    description: str  # further clarifies the label
     min: int | None
     max: int | None
     unit: str | None
