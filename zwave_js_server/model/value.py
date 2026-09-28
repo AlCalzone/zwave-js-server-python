@@ -307,6 +307,7 @@ class Value:
         self.node = node
         self.data: ValueDataType = {}
         self._value: Any = None
+        self._value_id: str = ""
         self._metadata = ValueMetadata({"type": "unknown"})
         self.update(data)
 
@@ -327,7 +328,7 @@ class Value:
     @property
     def value_id(self) -> str:
         """Return value ID."""
-        return _get_value_id_str_from_dict(self.node, self.data)
+        return self._value_id
 
     @property
     def metadata(self) -> ValueMetadata:
@@ -397,6 +398,11 @@ class Value:
         self.data.pop("prevValue", None)
         if "newValue" in self.data:
             self.data["value"] = self.data.pop("newValue")
+
+        # The value ID is derived from immutable parts of the value data, but it is
+        # looked up very often (discovery in consumers scans every value repeatedly),
+        # so build the string once per update instead of on every access.
+        self._value_id = _get_value_id_str_from_dict(self.node, self.data)
 
         if "metadata" in data:
             self._metadata.update(data["metadata"])

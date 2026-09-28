@@ -481,7 +481,18 @@ class Node(EventBase):
 
     def update(self, data: NodeDataType) -> None:
         """Update the internal state data."""
-        self.data = copy.deepcopy(data)
+        # Values and endpoints make up the bulk of a node state dump, and they are
+        # handed straight to Value/Endpoint instances that build their own containers,
+        # so copying them here would only duplicate a large object graph.
+        values = data["values"]
+        endpoints = data["endpoints"]
+        self.data = copy.deepcopy(
+            {
+                key: value
+                for key, value in data.items()
+                if key not in ("values", "endpoints")
+            }
+        )
         self._device_config = DeviceConfig(self.data.get("deviceConfig", {}))
         if (device_class := self.data.get("deviceClass")) is None:
             self._device_class = None
@@ -497,8 +508,8 @@ class Node(EventBase):
             object.__setattr__(self._statistics, "last_seen", self.last_seen)
             self._statistics.data["lastSeen"] = self.last_seen.isoformat()
 
-        self._update_values(self.data.pop("values"))
-        self._update_endpoints(self.data.pop("endpoints"))
+        self._update_values(values)
+        self._update_endpoints(endpoints)
 
     def get_command_class_values(
         self, command_class: CommandClass, endpoint: int | None = None

@@ -129,10 +129,10 @@ def test_metadata_allowed_cache_invalidation():
     assert metadata.allowed == [AllowedRangeValue(from_=0, to=5, step=None)]
 
 
-def test_configuration_value_type(inovelli_switch_state):
+def test_configuration_value_type(inovelli_switch):
     """Test configuration value types."""
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -150,7 +150,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.MANUAL_ENTRY
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -168,7 +168,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.ENUMERATED
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -185,7 +185,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.BOOLEAN
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -203,7 +203,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.MANUAL_ENTRY
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -221,7 +221,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.ENUMERATED
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -238,7 +238,7 @@ def test_configuration_value_type(inovelli_switch_state):
     assert value.configuration_value_type == ConfigurationValueType.RANGE
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -278,10 +278,10 @@ def test_set_value_result_str():
     assert str(result) == "Working (unknown duration)"
 
 
-def test_configuration_value_metadata(inovelli_switch_state):
+def test_configuration_value_metadata(inovelli_switch):
     """Test configuration value specific metadata."""
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
@@ -306,7 +306,7 @@ def test_configuration_value_metadata(inovelli_switch_state):
     assert metadata.format is None
 
     value = ConfigurationValue(
-        inovelli_switch_state,
+        inovelli_switch,
         ValueDataType(
             commandClass=112,
             property=8,
